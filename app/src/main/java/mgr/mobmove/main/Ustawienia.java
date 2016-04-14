@@ -1,4 +1,4 @@
-package mgr.mobmove;
+package mgr.mobmove.main;
 
 
 import android.os.Bundle;
@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import mgr.mobmove.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Historia extends Fragment {
+public class Ustawienia extends Fragment {
 
 
-    public Historia() {
+    public Ustawienia() {
         // Required empty public constructor
     }
 
@@ -23,7 +25,7 @@ public class Historia extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_historia, container, false);
+        return inflater.inflate(R.layout.fragment_ustawienia, container, false);
     }
 
 }

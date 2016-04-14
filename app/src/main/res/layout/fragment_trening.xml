@@ -1,31 +1,77 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mgr.mobmove.Trening">
+    tools:context=".main.Trening">
 
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Trening"
-        android:id="@+id/textView5"
-        android:layout_gravity="left|top" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:id="@+id/linearLayout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textView2"
-        android:layout_gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Rodzaj aktywności:"
+            android:id="@+id/textView2"
+            android:layout_gravity="left|top" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New CheckBox"
-        android:id="@+id/checkBox"
-        android:layout_gravity="left|bottom" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:layout_gravity="center_horizontal|top" />
+    </LinearLayout>
 
-</FrameLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_below="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Cel:"
+            android:id="@+id/textView12" />
+
+        <Spinner
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner2"
+            android:spinnerMode="dialog" /><![CDATA[
+
+        Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner3" />
+
+        ]]>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/celText8" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="START"
+            android:id="@+id/startbutton"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+</RelativeLayout>

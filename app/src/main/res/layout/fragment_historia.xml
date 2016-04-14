@@ -2,16 +2,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mgr.mobmove.Historia">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".main.Historia">
 
-    <!-- TODO: Update blank fragment layout -->
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="HISTORIA"
-        android:id="@+id/textView3"
-        android:layout_gravity="left|top" />
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="top">
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView" />
+        </TableRow>
+    </TableLayout>
 </FrameLayout>
