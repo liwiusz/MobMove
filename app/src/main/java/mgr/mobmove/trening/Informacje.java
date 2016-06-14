@@ -1,8 +1,11 @@
 package mgr.mobmove.trening;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,10 +14,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -30,6 +38,8 @@ public class Informacje extends Fragment implements LocationListener{
 
     TextView czas;
     long time =0;
+TextView speed;
+
     public Informacje() {
 
     }
@@ -38,9 +48,9 @@ public class Informacje extends Fragment implements LocationListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +59,7 @@ View v = inflater.inflate(R.layout.fragment_informacje, container, false);
         ImageButton stopButton = (ImageButton) v.findViewById(R.id.stopButton);
         final ToggleButton toggleButton =(ToggleButton)v.findViewById(R.id.toggleButton);
         final Chronometer chronometer = (Chronometer)v.findViewById(R.id.chronometer);
+speed = (TextView)v.findViewById(R.id.speedText);
       //  chronometer.setFormat("HH:MM:SS");
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,16 +88,21 @@ View v = inflater.inflate(R.layout.fragment_informacje, container, false);
         });
 
 
-//        LocationManager locationManager=(LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//       locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
-
-
+       LocationManager locationManager=(LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+       locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
+this.onLocationChanged(null);
         return v;
     }
 
     @Override
     public void onLocationChanged(Location location) {
-
+if(location==null)
+{
+    speed.setText("0,0 m/s");
+} else {
+    float nCurrentSpeed = location.getSpeed();
+    speed.setText(nCurrentSpeed +"m/s");
+}
     }
 
     @Override
