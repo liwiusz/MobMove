@@ -12,6 +12,13 @@
         android:layout_height="match_parent"
         android:weightSum="1">
 
+        <Chronometer
+            android:layout_width="132dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/chronometer"
+            android:linksClickable="false"
+            android:layout_gravity="center_horizontal" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,28 +33,21 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="00:00:00"
             android:id="@+id/czasText"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="right"
             android:textStyle="bold" />
-
-        <ImageButton
-            android:layout_width="73dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/stopButton"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.10" />
-
-        <Chronometer
-            android:layout_width="132dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/chronometer"
-            android:linksClickable="false"
-            />
 
         <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New ToggleButton"
             android:id="@+id/toggleButton" />
+
+        <ImageButton
+            android:layout_width="73dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/stopButton"
+            android:layout_gravity="right"
+            android:layout_weight="0.10" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -60,8 +60,23 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/testy" />
+            android:text="Zapisz"
+            android:id="@+id/saveTrening" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Ilość kroków:"
+            android:id="@+id/textView14" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0"
+            android:id="@+id/iloscKrokow"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 </FrameLayout>
