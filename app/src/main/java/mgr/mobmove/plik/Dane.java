@@ -36,6 +36,34 @@ public class Dane {
     public String rotationY;
     public String rotationZ;
 
+    public String krok;
+    public String xMap;
+    public String yMap;
+
+    public String getKrok() {
+        return krok+";";
+    }
+
+    public void setKrok(String krok) {
+        this.krok = krok;
+    }
+
+    public String getyMap() {
+        return yMap+";";
+    }
+
+    public void setyMap(String yMap) {
+        this.yMap = yMap;
+    }
+
+    public String getxMap() {
+        return xMap+";";
+    }
+
+    public void setxMap(String xMap) {
+        this.xMap = xMap;
+    }
+
     public String getLinearAccelometerX() {
         return linearAccelometerX+";";
     }

@@ -23,23 +23,52 @@ String s;
         try {
             file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename+".txt");
         //    file = new File("/sdcard/"+ filename+".txt");
-            outputStream = new FileOutputStream(file);
 
+            outputStream = new FileOutputStream(file);
+            outputStream.write("czas".getBytes());
+            outputStream.write("\t\t".getBytes());
+            outputStream.write("accelerometer".getBytes());
+
+            outputStream.write("\t\t\t\t".getBytes());
+
+            outputStream.write("Gravity".getBytes());
+            outputStream.write("\t\t\t\t".getBytes());
+
+            outputStream.write("Gyroscope".getBytes());
+            outputStream.write("\t\t\t\t".getBytes());
+
+            outputStream.write("GyroscopeU".getBytes());
+            outputStream.write("\t\t\t\t\t\t\t".getBytes());
+
+            outputStream.write("LinearAccelometer".getBytes());
+            outputStream.write("\t\t\t\t".getBytes());
+            outputStream.write("Orientation".getBytes());
+            outputStream.write("\t\t\t\t".getBytes());
+            outputStream.write("Rotation".getBytes());
+            outputStream.write("\t\t\t\t".getBytes());
+            outputStream.write("Mapa".getBytes());
+            outputStream.write("\t\t\t\t".getBytes());
+            outputStream.write("Krok".getBytes());
+            outputStream.write("\n".getBytes());
 
             for (int i=0;i<d.size();i++)
             {
                 outputStream.write(d.get(i).getCzas().getBytes());
+                outputStream.write("\t".getBytes());
                 outputStream.write(d.get(i).getXa().getBytes());
                 outputStream.write(d.get(i).getYa().getBytes());
                 outputStream.write(d.get(i).getZa().getBytes());
+                outputStream.write("\t".getBytes());
 
                outputStream.write(d.get(i).getGravityX().getBytes());
                 outputStream.write(d.get(i).getGravityY().getBytes());
                 outputStream.write(d.get(i).getGravityZ().getBytes());
+                outputStream.write("\t".getBytes());
 
                 outputStream.write(d.get(i).getGyroscopeX().getBytes());
                 outputStream.write(d.get(i).getGyroscopeY().getBytes());
                 outputStream.write(d.get(i).getGyroscopeZ().getBytes());
+                outputStream.write("\t".getBytes());
 
                 outputStream.write(d.get(i).getGyroscopeUXa().getBytes());
                 outputStream.write(d.get(i).getGyroscopeUYa().getBytes());
@@ -47,18 +76,30 @@ String s;
                 outputStream.write(d.get(i).getGyroscopeUXb().getBytes());
                 outputStream.write(d.get(i).getGyroscopeUYb().getBytes());
                 outputStream.write(d.get(i).getGyroscopeUZb().getBytes());
+                outputStream.write("\t".getBytes());
 
                 outputStream.write(d.get(i).getLinearAccelometerX().getBytes());
                 outputStream.write(d.get(i).getLinearAccelometerY().getBytes());
                 outputStream.write(d.get(i).getLinearAccelometerZ().getBytes());
+                outputStream.write("\t".getBytes());
 
                 outputStream.write(d.get(i).getOrientationX().getBytes());
                 outputStream.write(d.get(i).getOrientationY().getBytes());
                 outputStream.write(d.get(i).getOrientationZ().getBytes());
+                outputStream.write("\t".getBytes());
 
                 outputStream.write(d.get(i).getRotationX().getBytes());
                 outputStream.write(d.get(i).getRotationY().getBytes());
                 outputStream.write(d.get(i).getRotationZ().getBytes());
+                outputStream.write("\t".getBytes());
+
+                outputStream.write(d.get(i).getSpeed().getBytes());
+                outputStream.write(d.get(i).getxMap().getBytes());
+                outputStream.write(d.get(i).getyMap().getBytes());
+                outputStream.write("\t".getBytes());
+
+                outputStream.write(d.get(i).getKrok().getBytes());
+                outputStream.write("\t".getBytes());
 
                 outputStream.write("\n".getBytes());
             }

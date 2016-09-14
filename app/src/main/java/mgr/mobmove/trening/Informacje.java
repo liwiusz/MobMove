@@ -6,6 +6,10 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -38,26 +42,42 @@ import mgr.mobmove.plik.Plik;
 
 
 
-public class Informacje extends Fragment implements LocationListener{
+public class Informacje extends Fragment implements LocationListener, SensorEventListener{
 
 
     TextView czas;
     public  long time =0;
-TextView speed;
-Button saveTrening;
-
+    TextView speed;
+    TextView MapaX,MapaY,DystansMap;
+   private static  float currentDustance  =0;
+    Location oldLocation;
+    Button saveTrening;
     ArrayList<Dane> dane = new ArrayList<>();
+    private SensorManager sensorManager;
+    private Sensor stepCount;
+    TextView step;
 
-public static  boolean trwaTrening ;
+    private static float nCurrentSpeed=0;
+    private static double mapaX=0;
+    private static double mapaY=0;
+    private static double mapaXold=0;
+    private static double mapaYold=0;
+    private static float krok=0;
+
+public   boolean trwaTrening ;
 
     public Informacje() {
 
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sensorManager = (SensorManager)getActivity().getSystemService(getActivity().SENSOR_SERVICE);
+        stepCount = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
 
     }
 
@@ -70,7 +90,15 @@ View v = inflater.inflate(R.layout.fragment_informacje, container, false);
         ImageButton stopButton = (ImageButton) v.findViewById(R.id.stopButton);
         final ToggleButton toggleButton =(ToggleButton)v.findViewById(R.id.toggleButton);
         final Chronometer chronometer = (Chronometer)v.findViewById(R.id.chronometer);
-        final TextView step = (TextView)v.findViewById(R.id.iloscKrokow);
+
+
+
+        step = (TextView)v.findViewById(R.id.iloscKrokow);
+MapaX = (TextView)v.findViewById(R.id.xMap);
+        MapaY=(TextView)v.findViewById(R.id.yMap);
+DystansMap = (TextView)v.findViewById(R.id.dystansMap);
+
+
 speed = (TextView)v.findViewById(R.id.speedText);
       //  chronometer.setFormat("HH:MM:SS");
         toggleButton.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +154,7 @@ this.onLocationChanged(null);
 
                 Dane d = new Dane();
                 d.setCzas(String.valueOf(elapsedMillis));
-               //
+               //Accelometr
                 d.setXa(String.valueOf(Sensory.xValue));
                 d.setYa(String.valueOf(Sensory.yValue));
                 d.setZa(String.valueOf(Sensory.zValue));
@@ -158,10 +186,12 @@ this.onLocationChanged(null);
                 d.setRotationY(String.valueOf(Sensory.rotationY));
                 d.setRotationZ(String.valueOf(Sensory.rotationZ));
 
-                d.setSpeed(speed.getText().toString());
 
+                d.setSpeed(String.valueOf(nCurrentSpeed));
+                d.setxMap(String.valueOf(mapaX));
+                d.setyMap(String.valueOf(mapaY));
 
-
+                d.setKrok(String.valueOf(krok));
                 dane.add(d);
 
 
@@ -182,17 +212,60 @@ this.onLocationChanged(null);
 Plik.save("ok",dane);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        trwaTrening = true;
+        sensorManager = (SensorManager)getActivity().getSystemService(getActivity().SENSOR_SERVICE);
+        stepCount = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        if(stepCount !=null)
+        {
+            sensorManager.registerListener(this,stepCount,SensorManager.SENSOR_DELAY_UI);
+        }
+        else
+        {
+            Toast.makeText(getActivity(),"Sensor kroku jest niedostępny",Toast.LENGTH_LONG).show();
+        }
+        sensorManager.registerListener(this,stepCount,SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        trwaTrening = false;
+    }
 
     @Override
     public void onLocationChanged(Location location) {
 if(location==null)
 {
     speed.setText("0,0 m/s");
+    nCurrentSpeed = 0;
+    mapaX = 0;
+    mapaY = 0;
+    mapaYold = 0;
+    mapaXold =0;
 } else {
-    float nCurrentSpeed = location.getSpeed();
+     nCurrentSpeed = location.getSpeed();
     speed.setText(nCurrentSpeed +"m/s");
+    mapaX = location.getLatitude();
+    mapaY = location.getLongitude();
+    MapaY.setText(mapaY+"");
+MapaX.setText(mapaX+"");
+
+   if(oldLocation!=null) {
+       currentDustance += location.distanceTo(oldLocation);
+   }
+   else oldLocation = location;
+
+
+
+DystansMap.setText(currentDustance+"");
+
+
 }
+
+
     }
 
     @Override
@@ -207,6 +280,25 @@ if(location==null)
 
     @Override
     public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+Sensor sensor = event.sensor;
+        if(sensor.getType()==Sensor.TYPE_STEP_COUNTER)
+        {
+            //ToDo:Ogarnąc !
+           step.setText(String.valueOf(event.values[0]));
+
+            krok = event.values[0];
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 

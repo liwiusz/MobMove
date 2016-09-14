@@ -57,6 +57,30 @@
             android:id="@+id/speedText"
             android:layout_gravity="center_horizontal" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0"
+            android:id="@+id/xMap"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0"
+            android:id="@+id/yMap"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0"
+            android:id="@+id/dystansMap"
+            android:layout_gravity="center_horizontal" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,10 +1,12 @@
 package mgr.mobmove.trening;
 
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,6 +27,7 @@ public class Sensory extends Fragment implements SensorEventListener
 
 
     private TextView xText, yText, zText;
+     private TextView xText1, yText1, zText1;
 
     private SensorManager SM;
 
@@ -48,7 +51,13 @@ Sensor orientation;
     private LineGraphSeries<DataPoint> mSeries1;
     private LineGraphSeries<DataPoint> mSeries2;
     private LineGraphSeries<DataPoint> mSeries3;
+
+     private LineGraphSeries<DataPoint> mSeries11;
+     private LineGraphSeries<DataPoint> mSeries22;
+     private LineGraphSeries<DataPoint> mSeries33;
+
     private double graph2LastXValue = 5d;
+     private double graph22LastXValue = 5d;
 
    public static float xValue;
     public static float yValue;
@@ -80,6 +89,15 @@ Sensor orientation;
      public static float rotationX;
      public static float rotationY;
      public static float rotationZ;
+//     int currentApiVersion = Build.VERSION.SDK_INT;
+//     PackageManager packageManager = getActivity().getPackageManager();
+//     private boolean isKitkatWithStepSensor() {
+//
+//
+//         return currentApiVersion >= Build.VERSION_CODES.KITKAT
+//                 && packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER)
+//                 && packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_DETECTOR);
+//     }
 
 
 
@@ -97,6 +115,9 @@ Sensor orientation;
         linearAccelometer = SM.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         rotation = SM.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         orientation = SM.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
+
+
 
 
         //TODO: lista do wyswietlenia sensorow
@@ -131,10 +152,10 @@ Sensor orientation;
         mSeries1 = new LineGraphSeries<DataPoint>();
         mSeries1.setColor(Color.GREEN);
         graph2.addSeries(mSeries1);
-
-
         mSeries2 = new LineGraphSeries<DataPoint>();
         graph2.addSeries(mSeries2);
+        mSeries3 = new LineGraphSeries<DataPoint>();
+        mSeries3.setColor(Color.RED);
 
        // graph2.getViewport().setXAxisBoundsManual(true);
         graph2.getViewport().setMinX(0);
@@ -146,10 +167,37 @@ Sensor orientation;
 
        // graph2.setScaleX(5);
 
-
-        mSeries3 = new LineGraphSeries<DataPoint>();
-        mSeries3.setColor(Color.RED);
         graph2.addSeries(mSeries3);
+
+
+        xText1 = (TextView)v.findViewById(R.id.xText1);
+        yText1 = (TextView)v.findViewById(R.id.yText1);
+        zText1 = (TextView)v.findViewById(R.id.zText1);
+        zText1.setTextColor(Color.RED);
+        yText1.setTextColor(Color.BLUE);
+        xText1.setTextColor(Color.GREEN);
+
+
+        GraphView graph3 = (GraphView) v.findViewById(R.id.graphview1);
+        mSeries11 = new LineGraphSeries<DataPoint>();
+        mSeries11.setColor(Color.GREEN);
+        graph3.addSeries(mSeries11);
+        mSeries22 = new LineGraphSeries<DataPoint>();
+        graph3.addSeries(mSeries22);
+        mSeries33 = new LineGraphSeries<DataPoint>();
+        mSeries33.setColor(Color.RED);
+        graph3.addSeries(mSeries33);
+        // graph2.getViewport().setXAxisBoundsManual(true);
+        graph3.getViewport().setMinX(0);
+        graph3.getViewport().setMaxX(50);
+        graph3.getViewport().setMinY(-15);
+        graph3.getViewport().setMaxY(15);
+        graph3.getViewport().setScalable(true);
+        graph3.getViewport().setScrollable(true);
+
+        // graph2.setScaleX(5);
+
+
 
 
 
@@ -245,6 +293,10 @@ Sensor orientation;
             orientationX = event.values[0];
             orientationY = event.values[1];
             orientationZ = event.values[2];
+
+            xText1.setText("" + event.values[0]+" ");
+            yText1.setText("" + event.values[1]+ " ");
+            zText1.setText("" + event.values[2]);
         }
 
     }
@@ -275,6 +327,12 @@ Sensor orientation;
                 mSeries1.appendData(new DataPoint(graph2LastXValue, xValue), true, 100);
                 mSeries2.appendData(new DataPoint(graph2LastXValue, yValue), true, 100);
                 mSeries3.appendData(new DataPoint(graph2LastXValue, zValue), true, 100);
+
+
+                graph22LastXValue += 1d;
+                mSeries11.appendData(new DataPoint(graph22LastXValue, orientationX), true, 100);
+                mSeries22.appendData(new DataPoint(graph22LastXValue, orientationY), true, 100);
+                mSeries33.appendData(new DataPoint(graph22LastXValue, orientationZ), true, 100);
 
                 mHandler.postDelayed(this, 200);
             }
