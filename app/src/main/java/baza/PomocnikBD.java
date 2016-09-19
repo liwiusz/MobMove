@@ -14,7 +14,7 @@ public class PomocnikBD  extends SQLiteOpenHelper {
 
     private Context mKontekst;
     public final static int WERSJA_BAZY = 1;
-    public final static String NAZWA_BAZY="BAZA.db";
+    public final static String NAZWA_BAZY="baza";
 
     public final static String NAZWA_USER ="Uzytkownik";
     public final static String IDUSER="ID";
@@ -23,12 +23,13 @@ public class PomocnikBD  extends SQLiteOpenHelper {
     public final static String DATA_URODZENIA ="DATA URODZENIA";
     public final static String PLEC ="PLEC";
     public final static String WAGA ="WAGA";
-    public final static String WZROST ="WAGA";
+    public final static String WZROST ="WZROST";
     public final static String EMAIL ="EMAIL";
     public final static String HASLO ="HASLO";
 
     public final static String NAZWA_TRENING="TRENING";
     public final static String IDTRENING = "ID";
+    public final static String NAZWATRENINGU ="NAZWATRENINGU";
     public final static String CZAS ="CZAS";
     public final static String DYSTANS ="DYSTANS";
     public final static String TRASA ="TRASA";
@@ -36,8 +37,8 @@ public class PomocnikBD  extends SQLiteOpenHelper {
     public final static String PREDKOSCMAX ="PREDKOSC_MAX";
     public final static String KALORIE ="KALORIE";
     public final static String DATA ="DATA";
-    public final static String KEY_TypTreningu ="KEY";
-    public final static String KEY_User="KEY";
+    public final static String KEY_TypTreningu ="KEY_TYPTRENINGU";
+    public final static String KEY_User="KEY_USER";
 
     public final static String NAZWA_TYPTRENINGU = "TYP_TRENINGU";
     public final static String IDTYP_TRENINGU = "ID";
@@ -49,24 +50,24 @@ public class PomocnikBD  extends SQLiteOpenHelper {
     public final static String CZAS_T = "CZAS";
 
     public final static String NAZWA_TRENING_TEMPO ="TRENING_TEMPO";
-    public final static String KEY_IDTRENING="IDKEY";
-    public final static String KEY_IDTEMPO="IDKEY";
+    public final static String KEY_IDTRENING="IDKEYTRENING";
+    public final static String KEY_IDTEMPO="IDKEYTEMPO";
 
 
-public static String TW_TAB_USER = "CREATE TABLE"+NAZWA_USER+"("+IDUSER+"INTEGER PRIMARY KEY,"+
-        IMIE+"TEXT NOT NULL,"+NAZWISKO+"TEXT,"+DATA_URODZENIA+"DATE,"+PLEC+"TEXT NOT NULL,"+
-        WAGA+"DOUBLE,"+WZROST+"INTEGER,"+EMAIL+"TEXT NOT NULL,"+HASLO+"TEXT NOT NULL"+")";
+public static String TW_TAB_USER = "CREATE TABLE "+NAZWA_USER+"("+IDUSER+" INTEGER PRIMARY KEY,"+
+        IMIE+" TEXT NOT NULL,"+NAZWISKO+" TEXT,"+DATA_URODZENIA+" DATE,"+PLEC+" TEXT NOT NULL,"+
+        WAGA+" TEXT,"+WZROST+" TEXT,"+EMAIL+" TEXT NOT NULL,"+HASLO+" TEXT NOT NULL"+")";
 
-public static String TW_TAB_TRENING ="CREATE TABLE"+NAZWA_TRENING+"("+IDTRENING+"INTEGER PRIMARY KEY,"+
-        CZAS+"TIME,"+DYSTANS+"DOUBLE, "+TRASA+"TEXT,"+PREDKOSCSREDNIA+"DOUBLE,"+PREDKOSCMAX+"DOUBLE,"+
-        KALORIE+"INTEGER,"+DATA+"DATE,"+KEY_TypTreningu+"INTEGER,"+KEY_User+"INTEGER"+")";
+public static String TW_TAB_TRENING ="CREATE TABLE "+NAZWA_TRENING+" ("+IDTRENING+" INTEGER PRIMARY KEY,"+
+        CZAS+" TEXT,"+NAZWATRENINGU+" TEXT,"+DYSTANS+" TEXT, "+TRASA+" TEXT,"+PREDKOSCSREDNIA+" TEXT,"+PREDKOSCMAX+" TEXT,"+
+        KALORIE+" TEXT,"+DATA+" TEXT,"+KEY_TypTreningu+" INTEGER,"+KEY_User+" INTEGER"+")";
 
-    public static String TW_TAB_TYPTRENINGU = "CREATE TABLE"+NAZWA_TYPTRENINGU+"("+IDTYP_TRENINGU+"INTEGER PRIMARY KEY,"+
-            NAZWA+"TEXT not null"+")";
+    public static String TW_TAB_TYPTRENINGU = "CREATE TABLE "+NAZWA_TYPTRENINGU+"("+IDTYP_TRENINGU+" INTEGER PRIMARY KEY,"+
+            NAZWA+" TEXT not null"+")";
 
-    public static String TW_TAB_TEMPO="CREATE TABLE"+NAZWA_TEMPO+"("+IDTEMPO+" INTEGER PRIMARY KEY,"+DYSTANS_T+"DOUBLE,"+CZAS_T+"TIME"+")";
+    public static String TW_TAB_TEMPO=" CREATE TABLE "+NAZWA_TEMPO+"("+IDTEMPO+" INTEGER PRIMARY KEY,"+DYSTANS_T+" DOUBLE,"+CZAS_T+" TIME"+")";
 
-    public static String TW_TAB_TRENING_TEMPO = "CREATE TABLE"+NAZWA_TRENING_TEMPO+"("+KEY_IDTRENING+"INTEGER,"+KEY_IDTEMPO+"INTEGER"+")";
+    public static String TW_TAB_TRENING_TEMPO = " CREATE TABLE "+NAZWA_TRENING_TEMPO+"("+KEY_IDTRENING+" INTEGER,"+KEY_IDTEMPO+" INTEGER"+")";
 
 
 

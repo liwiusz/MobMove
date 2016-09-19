@@ -65,6 +65,19 @@
             android:ems="10"
             android:id="@+id/celText8" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Uwagi:"
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextUwagi"
+            android:layout_gravity="right" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public  class  Plik {
 
 
-    public static   void save(String filename, ArrayList<Dane> d)
+    public static   void save(String filename, ArrayList<Dane> d,String rodzajAktywnosci,String dystans,String cel,String uwagi)
     {
 String s;
         File file;
@@ -25,6 +25,19 @@ String s;
         //    file = new File("/sdcard/"+ filename+".txt");
 
             outputStream = new FileOutputStream(file);
+            outputStream.write("Rodzaj aktywnosci \t".getBytes());
+            outputStream.write(rodzajAktywnosci.getBytes());
+            outputStream.write("\t".getBytes());
+            outputStream.write("Dystans \t".getBytes());
+            outputStream.write(dystans.getBytes());
+            outputStream.write("\t".getBytes());
+            outputStream.write("Cel \t".getBytes());
+            outputStream.write(cel.getBytes());
+            outputStream.write("\t".getBytes());
+            outputStream.write("Uwagi \t".getBytes());
+            outputStream.write(uwagi.getBytes());
+
+            outputStream.write("\n".getBytes());
             outputStream.write("czas".getBytes());
             outputStream.write("\t\t".getBytes());
             outputStream.write("accelerometer".getBytes());
@@ -49,6 +62,8 @@ String s;
             outputStream.write("Mapa".getBytes());
             outputStream.write("\t\t\t\t".getBytes());
             outputStream.write("Krok".getBytes());
+            outputStream.write("\t".getBytes());
+            outputStream.write("Dystans".getBytes());
             outputStream.write("\n".getBytes());
 
             for (int i=0;i<d.size();i++)
@@ -99,6 +114,9 @@ String s;
                 outputStream.write("\t".getBytes());
 
                 outputStream.write(d.get(i).getKrok().getBytes());
+                outputStream.write("\t".getBytes());
+
+                outputStream.write(d.get(i).getDystans().getBytes());
                 outputStream.write("\t".getBytes());
 
                 outputStream.write("\n".getBytes());

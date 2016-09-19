@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_trening"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Trening" />
+            android:icon="@mipmap/ic_running"
+            android:title="Trening"
+            app:showAsAction="always"/>
         <item
             android:id="@+id/nav_historia"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Historia" />
+            android:icon="@mipmap/ic_calendar"
+            android:title="Historia"
+            app:showAsAction="always" />
         <item
             android:id="@+id/nav_rekordy"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Rekordy" />
+            android:icon="@mipmap/ic_sensor"
+            android:title="Sensory"
+            app:showAsAction="always"
+            />
         <item
             android:id="@+id/nav_omnie"
-            android:icon="@drawable/ic_menu_send"
-            android:title="O mnie"/>
+            android:icon="@mipmap/ic_user"
+            android:title="O mnie"
+            app:showAsAction="always"/>
         <item
             android:id="@+id/nav_ustawienia"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Ustawienia" />
+            android:icon="@mipmap/ic_settings"
+            android:title="Ustawienia"
+            app:showAsAction="always"/>
     </group>
 
 

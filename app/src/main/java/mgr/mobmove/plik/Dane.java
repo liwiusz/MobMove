@@ -40,6 +40,16 @@ public class Dane {
     public String xMap;
     public String yMap;
 
+    public String getDystans() {
+        return dystans+";";
+    }
+
+    public void setDystans(String dystans) {
+        this.dystans = dystans;
+    }
+
+    public String dystans;
+
     public String getKrok() {
         return krok+";";
     }

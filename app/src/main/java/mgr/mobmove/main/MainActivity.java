@@ -43,6 +43,7 @@ fragmentTransaction.commit();
 
          navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
     }
 
     @Override
@@ -87,6 +88,7 @@ fragmentTransaction.commit();
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);
             fragmentTransaction.commit();
+            setTitle("TRENING");
 
 
         } else if (id == R.id.nav_historia) {
@@ -95,19 +97,23 @@ fragmentTransaction.commit();
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);
             fragmentTransaction.commit();
+            setTitle("HISTORIA");
         } else if (id == R.id.nav_omnie) {
             Omnie fragment = new Omnie();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);
             fragmentTransaction.commit();
+            setTitle("O MNIE");
         } else if (id == R.id.nav_rekordy) {
-            Rekordy fragment = new Rekordy();
+            SensorAvailable fragment = new SensorAvailable();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment);
             fragmentTransaction.commit();
+            setTitle("SENSORY");
         } else if (id == R.id.nav_ustawienia) {
+            setTitle("USTAWIENIA");
             Ustawienia fragment = new Ustawienia();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();

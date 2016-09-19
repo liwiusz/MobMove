@@ -45,31 +45,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import mgr.mobmove.R;
 
-public  class Mapa extends Fragment  implements
-
-                OnMapReadyCallback,LocationListener
-               {
-
+public  class Mapa extends Fragment  implements OnMapReadyCallback,LocationListener {
     private GoogleMap map;
     MapView m;
                    Marker now;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
     private boolean mPermissionDenied = false;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_mapka,container,false);
 
-
         m = (MapView) v.findViewById(R.id.mapka);
-
         m.onCreate(savedInstanceState);
         m.getMapAsync(this);
-
-
         return v;
     }
 
@@ -104,17 +93,13 @@ LatLng mapCenter = new LatLng(41.889, -87.622);
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(mapCenter, 13));
 
-        // Flat markers will rotate when the map is rotated,
-        // and change perspective when the map is tilted.
-
 
         CameraPosition cameraPosition = CameraPosition.builder()
                 .target(mapCenter)
                 .zoom(13)
                 .bearing(90)
                 .build();
-//
-//        // Animate the change in camera view over 2 seconds
+
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),
                 2000, null);
 

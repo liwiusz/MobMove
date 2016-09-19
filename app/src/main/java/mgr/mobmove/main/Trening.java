@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import mgr.mobmove.R;
 import mgr.mobmove.trening.Ruch;
@@ -39,23 +40,44 @@ public class Trening extends Fragment {
 
     }
     String[] Cel = {"Dystans","Czas","Kalorie"};
-String[] TypTreningu = {"Bieg","Spacer","Skok"};
+String[] TypTreningu = {
+        "Chod","EYE Tracker: Przejscie po linii prostej",
+        "Przysiad MAX na LEWEJ: oczy OTWARTE",
+        "Przysiad MAX na LEWEJ: oczy ZAMKNIETE",
+        "Przysiad MAX na PRAWEJ: oczy OTWARTE",
+        "Przysiad MAX na PRAWEJ oczy ZAMKNIETE",
+        "Przysiad MAX: OTWARTE oczy",
+        "Przysiad MAX: ZAMKNIETE oczy",
+        "ROWNOWAGA LEWA OTWARTE",
+        "ROWNOWAGE PRAWA OTWAERE",
+        "ROWNOWAGA LEWA ZAMKNIETE",
+        "ROWNOWAGA PRAWA ZAMKNIETE",
+        "SKLON W PRZOD",
+        "WSPIECIE NA PALCE: OTWARTE",
+        "WSPIECIE NA PALCE: ZAMKNIETE",
+        "INNE"};
     private LocationManager locationManager;
     private LocationListener listener;
     private Button startRuch;
+    private String rodzajAktywnosci;
+    private Spinner spinnerTrning;
+    private Spinner spinner;
+    private EditText uwagi;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 View fragmentTrening = inflater.inflate(R.layout.fragment_trening,container,false);
+        uwagi = (EditText) fragmentTrening.findViewById(R.id.editTextUwagi);
+
         final EditText text = (EditText) fragmentTrening.findViewById(R.id.celText8);
         startRuch = (Button)fragmentTrening.findViewById(R.id.startbutton);
-Spinner spinnerTrning = (Spinner)fragmentTrening.findViewById(R.id.spinner);
+ spinnerTrning = (Spinner)fragmentTrening.findViewById(R.id.spinner);
         ArrayAdapter<String> adapterTrening = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,TypTreningu);
         adapterTrening.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerTrning.setAdapter(adapterTrening);
 
-        Spinner spinner = (Spinner) fragmentTrening.findViewById(R.id.spinner2);
+        spinner = (Spinner) fragmentTrening.findViewById(R.id.spinner2);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,Cel);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(adapter);
@@ -64,7 +86,7 @@ Spinner spinnerTrning = (Spinner)fragmentTrening.findViewById(R.id.spinner);
            @Override
            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-               Log.d("TESTY:", String.valueOf(position));
+
                switch (position) {
                    case 0:
                         text.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -89,7 +111,7 @@ Spinner spinnerTrning = (Spinner)fragmentTrening.findViewById(R.id.spinner);
             @Override
             public void onLocationChanged(Location location) {
 
-                Log.d("GPS: _--",location.getLongitude() + " " + location.getLatitude());
+
             }
 
             @Override
@@ -112,15 +134,6 @@ Spinner spinnerTrning = (Spinner)fragmentTrening.findViewById(R.id.spinner);
 
         configure_button();
 
-
-
-//        startRuch.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(), Ruch.class);
-//                startActivity(intent);
-//            }
-//        });
 
 
         return fragmentTrening;
@@ -155,6 +168,11 @@ Spinner spinnerTrning = (Spinner)fragmentTrening.findViewById(R.id.spinner);
                 //noinspection MissingPermission
                 locationManager.requestLocationUpdates("gps", 5000, 0, listener);
                 Intent intent = new Intent(getActivity(), Ruch.class);
+                rodzajAktywnosci = spinnerTrning.getSelectedItem().toString();
+
+                intent.putExtra("Rodzaj",rodzajAktywnosci);
+                intent.putExtra("Cel",spinner.getSelectedItem().toString());
+                intent.putExtra("Inne",uwagi.getText().toString());
                 startActivity(intent);
 
             }

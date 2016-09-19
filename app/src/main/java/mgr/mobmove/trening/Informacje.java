@@ -3,6 +3,7 @@ package mgr.mobmove.trening;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,9 +34,16 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+
+import baza.PomocnikBD;
+import baza.PomocnikBDTrening;
+import baza.WartosciProvider;
+import baza.WartosciProviderTrening;
 import mgr.mobmove.R;
 import mgr.mobmove.plik.Dane;
 import mgr.mobmove.plik.Plik;
@@ -49,7 +57,7 @@ public class Informacje extends Fragment implements LocationListener, SensorEven
     public  long time =0;
     TextView speed;
     TextView MapaX,MapaY,DystansMap;
-   private static  float currentDustance  =0;
+   private static  float currentDustance  ;
     Location oldLocation;
     Button saveTrening;
     ArrayList<Dane> dane = new ArrayList<>();
@@ -63,22 +71,32 @@ public class Informacje extends Fragment implements LocationListener, SensorEven
     private static double mapaXold=0;
     private static double mapaYold=0;
     private static float krok=0;
+    private static long elapsedMillis=0;
+    private String rodzajAktywnosci;
+    private String cel;
+    private String inne;
+    public   boolean trwaTrening ;
+    public ToggleButton toggleButton;
 
-public   boolean trwaTrening ;
 
     public Informacje() {
-
     }
-
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+Intent intentMain = getActivity().getIntent();
+        Bundle bundle = intentMain.getExtras();
+        rodzajAktywnosci = (String) bundle.get("Rodzaj");
+        cel = (String) bundle.get("Cel");
+        inne =(String) bundle.get("Inne");
+
         sensorManager = (SensorManager)getActivity().getSystemService(getActivity().SENSOR_SERVICE);
         stepCount = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-
+        currentDustance = 0;
+        krok =0;
     }
 
 
@@ -86,20 +104,19 @@ public   boolean trwaTrening ;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-View v = inflater.inflate(R.layout.fragment_informacje, container, false);
+    View v = inflater.inflate(R.layout.fragment_informacje, container, false);
+
         ImageButton stopButton = (ImageButton) v.findViewById(R.id.stopButton);
-        final ToggleButton toggleButton =(ToggleButton)v.findViewById(R.id.toggleButton);
+        toggleButton =(ToggleButton)v.findViewById(R.id.toggleButton);
         final Chronometer chronometer = (Chronometer)v.findViewById(R.id.chronometer);
 
-
-
+        //TEXTVIEW --------------
         step = (TextView)v.findViewById(R.id.iloscKrokow);
-MapaX = (TextView)v.findViewById(R.id.xMap);
+        MapaX = (TextView)v.findViewById(R.id.xMap);
         MapaY=(TextView)v.findViewById(R.id.yMap);
-DystansMap = (TextView)v.findViewById(R.id.dystansMap);
+    DystansMap = (TextView)v.findViewById(R.id.dystansMap);
+        speed = (TextView)v.findViewById(R.id.speedText);
 
-
-speed = (TextView)v.findViewById(R.id.speedText);
       //  chronometer.setFormat("HH:MM:SS");
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,8 +139,8 @@ speed = (TextView)v.findViewById(R.id.speedText);
         });
 
         czas = (TextView) v.findViewById(R.id.czasText);
-        czas.setText("00:03:00");
-        final CounterClass timer = new CounterClass(180000,1000);
+        czas.setText("00:00:05");
+        final CounterClass timer = new CounterClass(5000,1000);
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +152,9 @@ speed = (TextView)v.findViewById(R.id.speedText);
 
        LocationManager locationManager=(LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
-this.onLocationChanged(null);
+        this.onLocationChanged(null);
+
+
         saveTrening = (Button)v.findViewById(R.id.saveTrening);
        saveTrening.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -150,7 +169,7 @@ this.onLocationChanged(null);
         chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
-                long elapsedMillis = (SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
+               elapsedMillis = (SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
 
                 Dane d = new Dane();
                 d.setCzas(String.valueOf(elapsedMillis));
@@ -190,7 +209,7 @@ this.onLocationChanged(null);
                 d.setSpeed(String.valueOf(nCurrentSpeed));
                 d.setxMap(String.valueOf(mapaX));
                 d.setyMap(String.valueOf(mapaY));
-
+                d.setDystans(String.valueOf(currentDustance));
                 d.setKrok(String.valueOf(krok));
                 dane.add(d);
 
@@ -209,7 +228,29 @@ this.onLocationChanged(null);
     public  void zapisywanie()
     {
 
-Plik.save("ok",dane);
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDateandTime = sdf.format(new Date());
+        Plik.save(rodzajAktywnosci+" "+currentDateandTime,dane,rodzajAktywnosci,String.valueOf(currentDustance),cel,inne);
+        ContentValues wartosci = new ContentValues();
+String sredniaPredkosc;
+        try {
+           sredniaPredkosc = String.valueOf(Float.parseFloat(DystansMap.getText().toString())/elapsedMillis);
+        }
+        catch (NumberFormatException nfe)
+        {
+            sredniaPredkosc ="0.0";
+        }
+        wartosci.put(PomocnikBDTrening.NAZWATRENINGU,rodzajAktywnosci);
+            wartosci.put(PomocnikBDTrening.DATA,currentDateandTime);
+            wartosci.put(PomocnikBDTrening.CZAS,elapsedMillis+"");
+            wartosci.put(PomocnikBDTrening.FILENAME,rodzajAktywnosci+" "+currentDateandTime+".txt");
+            wartosci.put(PomocnikBDTrening.DYSTANS,DystansMap.getText().toString());
+       wartosci.put(PomocnikBDTrening.SREDNIAPREDKOSC,sredniaPredkosc);
+            Uri urinowego = getActivity().getContentResolver().insert(WartosciProviderTrening.URI_ZAWARTOSCI, wartosci);
+getActivity().finish();
+
     }
 
     @Override
@@ -239,7 +280,7 @@ Plik.save("ok",dane);
     public void onLocationChanged(Location location) {
 if(location==null)
 {
-    speed.setText("0,0 m/s");
+    speed.setText("0.0 m/s");
     nCurrentSpeed = 0;
     mapaX = 0;
     mapaY = 0;
@@ -252,15 +293,15 @@ if(location==null)
     mapaY = location.getLongitude();
     MapaY.setText(mapaY+"");
 MapaX.setText(mapaX+"");
+    Log.d("LOKALIZACJA new ",String.valueOf(location.getLatitude())+" "+String.valueOf(location.getLongitude()));
+if(trwaTrening && oldLocation!=null && oldLocation!=location)
+{
 
-   if(oldLocation!=null) {
-       currentDustance += location.distanceTo(oldLocation);
-   }
-   else oldLocation = location;
+    currentDustance += (oldLocation.distanceTo(location))/2/1000;
+    DystansMap.setText(String.format("%.2f",String.valueOf(currentDustance)));
+}
+    oldLocation = location;
 
-
-
-DystansMap.setText(currentDustance+"");
 
 
 }
@@ -272,17 +313,14 @@ DystansMap.setText(currentDustance+"");
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
-
     @Override
     public void onProviderEnabled(String provider) {
 
     }
-
     @Override
     public void onProviderDisabled(String provider) {
 
     }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
 
@@ -304,6 +342,9 @@ Sensor sensor = event.sensor;
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
+
+
+
     public class CounterClass extends CountDownTimer {
 
         /**
@@ -330,7 +371,7 @@ long millis = millisUntilFinished;
 
         @Override
         public void onFinish() {
-
+toggleButton.setChecked(true);
         }
 
     }
