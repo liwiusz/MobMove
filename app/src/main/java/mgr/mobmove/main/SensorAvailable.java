@@ -61,10 +61,7 @@ public class SensorAvailable extends Fragment {
         PackageManager manager = getActivity().getPackageManager();
         SensorManager sensorMngr = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> sensors = sensorMngr.getSensorList(Sensor.TYPE_ALL);
-
-
         for (Sensor sensor : sensors) {
-            // debug or print the follwoing
            switch ( sensor.getType())
            {
                case Sensor.TYPE_ACCELEROMETER:
@@ -91,7 +88,6 @@ public class SensorAvailable extends Fragment {
                case Sensor.TYPE_STEP_COUNTER:
                        STEP_COUNTER.setImageResource(R.mipmap.ic_yes);
                    break;
-
            }
         }
     }

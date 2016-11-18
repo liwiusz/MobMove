@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
 
 
 import baza.PomocnikBD;
@@ -55,7 +56,7 @@ public class Informacje extends Fragment implements LocationListener, SensorEven
 
     TextView czas;
     public  long time =0;
-    TextView speed;
+    TextView speed,timeM;
     TextView MapaX,MapaY,DystansMap;
    private static  float currentDustance  ;
     Location oldLocation;
@@ -77,8 +78,8 @@ public class Informacje extends Fragment implements LocationListener, SensorEven
     private String inne;
     public   boolean trwaTrening ;
     public ToggleButton toggleButton;
-
-
+android.os.Handler customHandler = new android.os.Handler();
+long timeinMillisecounds = 0L,updateTime=0L,timeSwapBuff=0L,startTime=0L;
     public Informacje() {
     }
 
@@ -98,7 +99,66 @@ Intent intentMain = getActivity().getIntent();
         currentDustance = 0;
         krok =0;
     }
+Runnable updateTimerThread = new Runnable() {
+    @Override
+    public void run() {
+        timeinMillisecounds = SystemClock.uptimeMillis()-startTime;
+        updateTime = timeSwapBuff+timeinMillisecounds;
+        int secs=(int)(updateTime/1000);
+        int mins=secs/60;
+        secs%=60;
+        int milicecounds = (int)(updateTime%1000);
+        timeM.setText(""+mins+":"+String.format("%2d",secs)+":"+String.format("%3d",milicecounds));
 
+        Dane d = new Dane();
+        d.setCzas(""+mins+":"+String.format("%2d",secs)+":"+String.format("%3d",milicecounds));
+        //Accelometr
+        d.setXa(String.valueOf(Sensory.xValue));
+        d.setYa(String.valueOf(Sensory.yValue));
+        d.setZa(String.valueOf(Sensory.zValue));
+        //
+        d.setGravityX(String.valueOf(Sensory.gravityX));
+        d.setGravityY(String.valueOf(Sensory.gravityY));
+        d.setGravityZ(String.valueOf(Sensory.gravityZ));
+        //
+        d.setGyroscopeX(String.valueOf(Sensory.gyroscopeX));
+        d.setGyroscopeY(String.valueOf(Sensory.gyroscopeY));
+        d.setGyroscopeZ(String.valueOf(Sensory.gyroscopeY));
+        //
+        d.setGyroscopeUXa(String.valueOf(Sensory.gyroscopeUXa));
+        d.setGyroscopeUYa(String.valueOf(Sensory.gyroscopeUYa));
+        d.setGyroscopeUZa(String.valueOf(Sensory.gyroscopeUZa));
+        d.setGyroscopeUXb(String.valueOf(Sensory.gyroscopeUXb));
+        d.setGyroscopeUYb(String.valueOf(Sensory.gyroscopeUYb));
+        d.setGyroscopeUZb(String.valueOf(Sensory.gyroscopeUZb));
+        //
+        d.setLinearAccelometerX(String.valueOf(Sensory.linearAccelometerX));
+        d.setLinearAccelometerY(String.valueOf(Sensory.linearAccelometerY));
+        d.setLinearAccelometerZ(String.valueOf(Sensory.linearAccelometerZ));
+        //
+        d.setMagneticX(String.valueOf(Sensory.magneticX));
+        d.setMagneticY(String.valueOf(Sensory.magneticY));
+        d.setMagneticZ(String.valueOf(Sensory.magneticZ));
+        //
+        d.setOrientationX(String.valueOf(Sensory.orientationX));
+        d.setOrientationY(String.valueOf(Sensory.orientationY));
+        d.setOrientationZ(String.valueOf(Sensory.orientationZ));
+        //
+        d.setRotationX(String.valueOf(Sensory.rotationX));
+        d.setRotationY(String.valueOf(Sensory.rotationY));
+        d.setRotationZ(String.valueOf(Sensory.rotationZ));
+
+
+        d.setSpeed(String.valueOf(nCurrentSpeed));
+        d.setxMap(String.valueOf(mapaX));
+        d.setyMap(String.valueOf(mapaY));
+        d.setDystans(String.valueOf(currentDustance));
+        d.setKrok(String.valueOf(krok));
+        dane.add(d);
+
+        customHandler.postDelayed(this,0);
+    }
+};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,6 +168,7 @@ Intent intentMain = getActivity().getIntent();
 
         ImageButton stopButton = (ImageButton) v.findViewById(R.id.stopButton);
         toggleButton =(ToggleButton)v.findViewById(R.id.toggleButton);
+        timeM = (TextView)v.findViewById(R.id.timeM);
         final Chronometer chronometer = (Chronometer)v.findViewById(R.id.chronometer);
 
         //TEXTVIEW --------------
@@ -117,7 +178,7 @@ Intent intentMain = getActivity().getIntent();
     DystansMap = (TextView)v.findViewById(R.id.dystansMap);
         speed = (TextView)v.findViewById(R.id.speedText);
 
-      //  chronometer.setFormat("HH:MM:SS");
+
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,14 +187,16 @@ Intent intentMain = getActivity().getIntent();
                     chronometer.setBase(SystemClock.elapsedRealtime()+time);
                     chronometer.start();
                     trwaTrening = true;
-
-
+                    startTime = SystemClock.uptimeMillis();
+                    customHandler.postDelayed(updateTimerThread,0);
                 }
                 else
                 {
                     time = chronometer.getBase()-SystemClock.elapsedRealtime();
                     chronometer.stop();
                     trwaTrening = false;
+                    timeSwapBuff+=timeinMillisecounds;
+                    customHandler.removeCallbacks(updateTimerThread);
                 }
             }
         });
@@ -171,48 +234,48 @@ Intent intentMain = getActivity().getIntent();
             public void onChronometerTick(Chronometer chronometer) {
                elapsedMillis = (SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
 
-                Dane d = new Dane();
-                d.setCzas(String.valueOf(elapsedMillis));
-               //Accelometr
-                d.setXa(String.valueOf(Sensory.xValue));
-                d.setYa(String.valueOf(Sensory.yValue));
-                d.setZa(String.valueOf(Sensory.zValue));
-                //
-                d.setGravityX(String.valueOf(Sensory.gravityX));
-                d.setGravityY(String.valueOf(Sensory.gravityY));
-                d.setGravityZ(String.valueOf(Sensory.gravityZ));
-                //
-                d.setGyroscopeX(String.valueOf(Sensory.gyroscopeX));
-                d.setGyroscopeY(String.valueOf(Sensory.gyroscopeY));
-                d.setGyroscopeZ(String.valueOf(Sensory.gyroscopeY));
-                //
-                d.setGyroscopeUXa(String.valueOf(Sensory.gyroscopeUXa));
-                d.setGyroscopeUYa(String.valueOf(Sensory.gyroscopeUYa));
-                d.setGyroscopeUZa(String.valueOf(Sensory.gyroscopeUZa));
-                d.setGyroscopeUXb(String.valueOf(Sensory.gyroscopeUXb));
-                d.setGyroscopeUYb(String.valueOf(Sensory.gyroscopeUYb));
-                d.setGyroscopeUZb(String.valueOf(Sensory.gyroscopeUZb));
-                //
-                d.setLinearAccelometerX(String.valueOf(Sensory.linearAccelometerX));
-                d.setLinearAccelometerY(String.valueOf(Sensory.linearAccelometerY));
-                d.setLinearAccelometerZ(String.valueOf(Sensory.linearAccelometerZ));
-                //
-                d.setOrientationX(String.valueOf(Sensory.orientationX));
-                d.setOrientationY(String.valueOf(Sensory.orientationY));
-                d.setOrientationZ(String.valueOf(Sensory.orientationZ));
-                //
-                d.setRotationX(String.valueOf(Sensory.rotationX));
-                d.setRotationY(String.valueOf(Sensory.rotationY));
-                d.setRotationZ(String.valueOf(Sensory.rotationZ));
-
-
-                d.setSpeed(String.valueOf(nCurrentSpeed));
-                d.setxMap(String.valueOf(mapaX));
-                d.setyMap(String.valueOf(mapaY));
-                d.setDystans(String.valueOf(currentDustance));
-                d.setKrok(String.valueOf(krok));
-                dane.add(d);
-
+//                Dane d = new Dane();
+//                d.setCzas(String.valueOf(elapsedMillis));
+//               //Accelometr
+//                d.setXa(String.valueOf(Sensory.xValue));
+//                d.setYa(String.valueOf(Sensory.yValue));
+//                d.setZa(String.valueOf(Sensory.zValue));
+//                //
+//                d.setGravityX(String.valueOf(Sensory.gravityX));
+//                d.setGravityY(String.valueOf(Sensory.gravityY));
+//                d.setGravityZ(String.valueOf(Sensory.gravityZ));
+//                //
+//                d.setGyroscopeX(String.valueOf(Sensory.gyroscopeX));
+//                d.setGyroscopeY(String.valueOf(Sensory.gyroscopeY));
+//                d.setGyroscopeZ(String.valueOf(Sensory.gyroscopeY));
+//                //
+//                d.setGyroscopeUXa(String.valueOf(Sensory.gyroscopeUXa));
+//                d.setGyroscopeUYa(String.valueOf(Sensory.gyroscopeUYa));
+//                d.setGyroscopeUZa(String.valueOf(Sensory.gyroscopeUZa));
+//                d.setGyroscopeUXb(String.valueOf(Sensory.gyroscopeUXb));
+//                d.setGyroscopeUYb(String.valueOf(Sensory.gyroscopeUYb));
+//                d.setGyroscopeUZb(String.valueOf(Sensory.gyroscopeUZb));
+//                //
+//                d.setLinearAccelometerX(String.valueOf(Sensory.linearAccelometerX));
+//                d.setLinearAccelometerY(String.valueOf(Sensory.linearAccelometerY));
+//                d.setLinearAccelometerZ(String.valueOf(Sensory.linearAccelometerZ));
+//                //
+//                d.setOrientationX(String.valueOf(Sensory.orientationX));
+//                d.setOrientationY(String.valueOf(Sensory.orientationY));
+//                d.setOrientationZ(String.valueOf(Sensory.orientationZ));
+//                //
+//                d.setRotationX(String.valueOf(Sensory.rotationX));
+//                d.setRotationY(String.valueOf(Sensory.rotationY));
+//                d.setRotationZ(String.valueOf(Sensory.rotationZ));
+//
+//
+//                d.setSpeed(String.valueOf(nCurrentSpeed));
+//                d.setxMap(String.valueOf(mapaX));
+//                d.setyMap(String.valueOf(mapaY));
+//                d.setDystans(String.valueOf(currentDustance));
+//                d.setKrok(String.valueOf(krok));
+//                dane.add(d);
+//
 
 
 
@@ -233,7 +296,7 @@ Intent intentMain = getActivity().getIntent();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateandTime = sdf.format(new Date());
         Plik.save(rodzajAktywnosci+" "+currentDateandTime,dane,rodzajAktywnosci,String.valueOf(currentDustance),cel,inne);
-        ContentValues wartosci = new ContentValues();
+
 String sredniaPredkosc;
         try {
            sredniaPredkosc = String.valueOf(Float.parseFloat(DystansMap.getText().toString())/elapsedMillis);
@@ -242,13 +305,15 @@ String sredniaPredkosc;
         {
             sredniaPredkosc ="0.0";
         }
-        wartosci.put(PomocnikBDTrening.NAZWATRENINGU,rodzajAktywnosci);
+            ContentValues wartosci = new ContentValues();
+            wartosci.put(PomocnikBDTrening.NAZWATRENINGU,rodzajAktywnosci);
             wartosci.put(PomocnikBDTrening.DATA,currentDateandTime);
             wartosci.put(PomocnikBDTrening.CZAS,elapsedMillis+"");
             wartosci.put(PomocnikBDTrening.FILENAME,rodzajAktywnosci+" "+currentDateandTime+".txt");
             wartosci.put(PomocnikBDTrening.DYSTANS,DystansMap.getText().toString());
-       wartosci.put(PomocnikBDTrening.SREDNIAPREDKOSC,sredniaPredkosc);
+            wartosci.put(PomocnikBDTrening.SREDNIAPREDKOSC,sredniaPredkosc);
             Uri urinowego = getActivity().getContentResolver().insert(WartosciProviderTrening.URI_ZAWARTOSCI, wartosci);
+
 getActivity().finish();
 
     }
@@ -284,26 +349,20 @@ if(location==null)
     nCurrentSpeed = 0;
     mapaX = 0;
     mapaY = 0;
-    mapaYold = 0;
-    mapaXold =0;
 } else {
      nCurrentSpeed = location.getSpeed();
     speed.setText(nCurrentSpeed +"m/s");
     mapaX = location.getLatitude();
     mapaY = location.getLongitude();
     MapaY.setText(mapaY+"");
-MapaX.setText(mapaX+"");
+    MapaX.setText(mapaX+"");
     Log.d("LOKALIZACJA new ",String.valueOf(location.getLatitude())+" "+String.valueOf(location.getLongitude()));
-if(trwaTrening && oldLocation!=null && oldLocation!=location)
-{
-
-    currentDustance += (oldLocation.distanceTo(location))/2/1000;
-    DystansMap.setText(String.format("%.2f",String.valueOf(currentDustance)));
-}
+//if(trwaTrening && oldLocation!=null && oldLocation!=location)
+//{
+  //  currentDustance += (oldLocation.distanceTo(location))/2/1000;
+  //  DystansMap.setText(String.format("%.2f",String.valueOf(currentDustance)));
+//}
     oldLocation = location;
-
-
-
 }
 
 
@@ -323,16 +382,14 @@ if(trwaTrening && oldLocation!=null && oldLocation!=location)
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-Sensor sensor = event.sensor;
+        Sensor sensor = event.sensor;
         if(sensor.getType()==Sensor.TYPE_STEP_COUNTER)
         {
-            //ToDo:Ogarnąc !
+
            step.setText(String.valueOf(event.values[0]));
 
             krok = event.values[0];
         }
-
     }
 
     @Override

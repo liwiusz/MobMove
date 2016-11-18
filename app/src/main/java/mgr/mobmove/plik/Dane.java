@@ -40,6 +40,35 @@ public class Dane {
     public String xMap;
     public String yMap;
 
+    public String magneticX;
+
+    public String getMagneticY() {
+        return magneticY+";";
+    }
+
+    public void setMagneticY(String magneticY) {
+        this.magneticY = magneticY;
+    }
+
+    public String getMagneticZ() {
+        return magneticZ+";";
+    }
+
+    public void setMagneticZ(String magneticZ) {
+        this.magneticZ = magneticZ;
+    }
+
+    public String getMagneticX() {
+        return magneticX+";";
+    }
+
+    public void setMagneticX(String magneticX) {
+        this.magneticX = magneticX;
+    }
+
+    public String magneticY;
+    public String magneticZ;
+
     public String getDystans() {
         return dystans+";";
     }

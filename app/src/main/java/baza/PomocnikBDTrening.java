@@ -33,7 +33,6 @@ public class PomocnikBDTrening extends SQLiteOpenHelper {
             + SREDNIAPREDKOSC + " text not null,"
 
             + FILENAME + " text not null);";
-
     private static final String KAS_BAZY = "DROP TABLE IF EXISTS "
             + NAZWA_TABELI;
     public PomocnikBDTrening(Context context) {
@@ -52,3 +51,5 @@ public class PomocnikBDTrening extends SQLiteOpenHelper {
         onCreate(db);
     }
 }
+
+

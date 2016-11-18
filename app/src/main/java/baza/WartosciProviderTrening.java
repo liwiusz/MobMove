@@ -44,12 +44,12 @@ public class WartosciProviderTrening extends ContentProvider {
                 idDodanego =
                         baza.insert(PomocnikBDTrening.NAZWA_TABELI, //tablela
                                 null, //nullColumnHack
-                                values); //warto�ci
+                                values); //wartości
                 break;
             default:
                 throw new IllegalArgumentException("Nieznane URI: " + uri);
         }
-        //powiadomienie o zmianie danych (->np. od�wie�enie listy)
+
         getContext().getContentResolver().notifyChange(uri, null);
         return Uri.parse(PomocnikBDTrening.NAZWA_TABELI + "/" + idDodanego);
     }

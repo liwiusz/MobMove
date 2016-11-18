@@ -31,6 +31,7 @@ public class Sensory extends Fragment implements SensorEventListener
      Sensor linearAccelometer;
      Sensor rotation;
      Sensor orientation;
+     Sensor magnetic;
 
     private final Handler mHandler = new Handler();
     private Runnable mTimer1;
@@ -77,6 +78,10 @@ public class Sensory extends Fragment implements SensorEventListener
      public static float rotationY;
      public static float rotationZ;
 
+     public static float magneticX;
+     public static float magneticY;
+     public static float magneticZ;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +93,7 @@ public class Sensory extends Fragment implements SensorEventListener
         linearAccelometer = SM.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         rotation = SM.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         orientation = SM.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        magnetic = SM.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
      }
 
 
@@ -102,23 +108,23 @@ public class Sensory extends Fragment implements SensorEventListener
         zText.setTextColor(Color.RED);
         yText.setTextColor(Color.BLUE);
         xText.setTextColor(Color.GREEN);
-        GraphView graph2 = (GraphView) v.findViewById(R.id.graphview);
+        GraphView graph = (GraphView) v.findViewById(R.id.graphview);
         mSeries1 = new LineGraphSeries<DataPoint>();
         mSeries1.setColor(Color.GREEN);
-        graph2.addSeries(mSeries1);
+        graph.addSeries(mSeries1);
         mSeries2 = new LineGraphSeries<DataPoint>();
-        graph2.addSeries(mSeries2);
+        graph.addSeries(mSeries2);
         mSeries3 = new LineGraphSeries<DataPoint>();
         mSeries3.setColor(Color.RED);
        // graph2.getViewport().setXAxisBoundsManual(true);
-        graph2.getViewport().setMinX(0);
-        graph2.getViewport().setMaxX(50);
-        graph2.getViewport().setMinY(-15);
-        graph2.getViewport().setMaxY(15);
-     graph2.getViewport().setScalable(true);
-        graph2.getViewport().setScrollable(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(50);
+        graph.getViewport().setMinY(-15);
+        graph.getViewport().setMaxY(15);
+     graph.getViewport().setScalable(true);
+        graph.getViewport().setScrollable(true);
        // graph2.setScaleX(5);
-        graph2.addSeries(mSeries3);
+        graph.addSeries(mSeries3);
         xText1 = (TextView)v.findViewById(R.id.xText1);
         yText1 = (TextView)v.findViewById(R.id.yText1);
         zText1 = (TextView)v.findViewById(R.id.zText1);
@@ -206,6 +212,12 @@ public class Sensory extends Fragment implements SensorEventListener
             yText1.setText("" + event.values[1]+ " ");
             zText1.setText("" + event.values[2]);
         }
+        else if(sensor.getType()==Sensor.TYPE_MAGNETIC_FIELD)
+        {
+            magneticX = event.values[0];
+            magneticY = event.values[1];
+            magneticZ = event.values[2];
+        }
     }
 
     @Override
@@ -216,25 +228,26 @@ public class Sensory extends Fragment implements SensorEventListener
     @Override
     public void onResume() {
         super.onResume();
-        SM.registerListener(this,accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
-        SM.registerListener(this,gravity,SensorManager.SENSOR_DELAY_NORMAL);
-        SM.registerListener(this,gyroscope,SensorManager.SENSOR_DELAY_NORMAL);
-        SM.registerListener(this,gyroscopeU,SensorManager.SENSOR_DELAY_NORMAL);
-        SM.registerListener(this,linearAccelometer,SensorManager.SENSOR_DELAY_NORMAL);
-        SM.registerListener(this,rotation,SensorManager.SENSOR_DELAY_NORMAL);
-        SM.registerListener(this,orientation,SensorManager.SENSOR_DELAY_NORMAL);
+        SM.registerListener(this,accelerometer,SensorManager.SENSOR_DELAY_FASTEST);
+        SM.registerListener(this,gravity,SensorManager.SENSOR_DELAY_FASTEST);
+        SM.registerListener(this,gyroscope,SensorManager.SENSOR_DELAY_FASTEST);
+        SM.registerListener(this,gyroscopeU,SensorManager.SENSOR_DELAY_FASTEST);
+        SM.registerListener(this,linearAccelometer,SensorManager.SENSOR_DELAY_FASTEST);
+        SM.registerListener(this,rotation,SensorManager.SENSOR_DELAY_FASTEST);
+        SM.registerListener(this,orientation,SensorManager.SENSOR_DELAY_FASTEST);
+        SM.registerListener(this,magnetic,SensorManager.SENSOR_DELAY_FASTEST);
         mTimer2 = new Runnable() {
             @Override
             public void run() {
                 graph2LastXValue += 1d;
-                mSeries1.appendData(new DataPoint(graph2LastXValue, xValue), true, 100);
-                mSeries2.appendData(new DataPoint(graph2LastXValue, yValue), true, 100);
-                mSeries3.appendData(new DataPoint(graph2LastXValue, zValue), true, 100);
+                mSeries1.appendData(new DataPoint(graph2LastXValue, xValue), true, 1000);
+                mSeries2.appendData(new DataPoint(graph2LastXValue, yValue), true, 1000);
+                mSeries3.appendData(new DataPoint(graph2LastXValue, zValue), true, 1000);
                 graph22LastXValue += 1d;
-                mSeries11.appendData(new DataPoint(graph22LastXValue, orientationX), true, 100);
-                mSeries22.appendData(new DataPoint(graph22LastXValue, orientationY), true, 100);
-                mSeries33.appendData(new DataPoint(graph22LastXValue, orientationZ), true, 100);
-                mHandler.postDelayed(this, 200);
+                mSeries11.appendData(new DataPoint(graph22LastXValue, orientationX), true, 1000);
+                mSeries22.appendData(new DataPoint(graph22LastXValue, orientationY), true, 1000);
+                mSeries33.appendData(new DataPoint(graph22LastXValue, orientationZ), true, 1000);
+                mHandler.postDelayed(this,0);
             }
         };
         mHandler.postDelayed(mTimer2, 1000);

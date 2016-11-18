@@ -106,7 +106,7 @@ LatLng mapCenter = new LatLng(41.889, -87.622);
 
         map.addPolyline(new PolylineOptions().add(
                 mapCenter,new LatLng(10.761184,106.683331),
-                new LatLng(10.760710,106.682204)).width(10).color(Color.RED)
+                new LatLng(10.760710,106.682204)).width(1).color(Color.RED)
         );
         Log.d("MAPA","TEST");
     }

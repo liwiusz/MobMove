@@ -45,13 +45,9 @@ public class Historia extends Fragment implements LoaderManager.LoaderCallbacks<
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 View v = inflater.inflate(R.layout.fragment_historia, container, false);
         mLista = (ListView) v.findViewById(R.id.lista_wartosci);
-
         wypelnijListe();
-
-
         //ustawienie trybu wielokrotnego wyboru
         mLista.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 
@@ -63,7 +59,6 @@ View v = inflater.inflate(R.layout.fragment_historia, container, false);
                 startEdycja(id);
             }
         });
-
         return v;
     }
 
