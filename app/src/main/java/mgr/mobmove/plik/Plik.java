@@ -59,6 +59,11 @@ String s;
             outputStream.write("Magnetic".getBytes());
             outputStream.write("\t\t\t\t".getBytes());
 
+            outputStream.write("Macierz obrotu dla accelerometer".getBytes());
+            outputStream.write("\t\t\t\t".getBytes());
+            outputStream.write("Macierz obrotu dla LinearAccelometer".getBytes());
+            outputStream.write("\t\t\t\t".getBytes());
+
             outputStream.write("Orientation".getBytes());
             outputStream.write("\t\t\t\t".getBytes());
             outputStream.write("Rotation".getBytes());
@@ -105,6 +110,9 @@ String s;
                 outputStream.write(d.get(i).getMagneticX().getBytes());
                 outputStream.write(d.get(i).getMagneticY().getBytes());
                 outputStream.write(d.get(i).getMagneticZ().getBytes());
+                outputStream.write("\t".getBytes());
+
+                outputStream.write(d.get(i).getMacierzObrotu().getBytes());
                 outputStream.write("\t".getBytes());
 
                 outputStream.write(d.get(i).getOrientationX().getBytes());

@@ -41,20 +41,11 @@ public class Trening extends Fragment {
     }
     String[] Cel = {"Dystans","Czas","Kalorie"};
 String[] TypTreningu = {
-        "Chod","EYE Tracker: Przejscie po linii prostej",
-        "Przysiad MAX na LEWEJ: oczy OTWARTE",
-        "Przysiad MAX na LEWEJ: oczy ZAMKNIETE",
-        "Przysiad MAX na PRAWEJ: oczy OTWARTE",
-        "Przysiad MAX na PRAWEJ oczy ZAMKNIETE",
-        "Przysiad MAX: OTWARTE oczy",
-        "Przysiad MAX: ZAMKNIETE oczy",
-        "ROWNOWAGA LEWA OTWARTE",
-        "ROWNOWAGE PRAWA OTWAERE",
-        "ROWNOWAGA LEWA ZAMKNIETE",
-        "ROWNOWAGA PRAWA ZAMKNIETE",
-        "SKLON W PRZOD",
-        "WSPIECIE NA PALCE: OTWARTE",
-        "WSPIECIE NA PALCE: ZAMKNIETE",
+        "Chod","TRUCHT",
+        "SKOK W DAL",
+        "SKOK W WZWYŻ",
+        "SPRINT",
+        "PRZYSIAD",
         "INNE"};
     private LocationManager locationManager;
     private LocationListener listener;

@@ -9,11 +9,12 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_marginLeft="0dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,10 +25,11 @@
             android:layout_gravity="left|top" />
 
         <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
             android:id="@+id/spinner"
-            android:layout_gravity="center_horizontal|top" />
+            android:layout_gravity="center_horizontal|top"
+            android:spinnerMode="dialog" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,13 +45,15 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Cel:"
-            android:id="@+id/textView12" />
+            android:id="@+id/textView12"
+            android:visibility="gone" />
 
         <Spinner
             android:layout_width="143dp"
             android:layout_height="wrap_content"
             android:id="@+id/spinner2"
-            android:spinnerMode="dialog" /><![CDATA[
+            android:spinnerMode="dialog"
+            android:visibility="gone" /><![CDATA[
 
         Spinner
             android:layout_width="wrap_content"
@@ -63,23 +67,25 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/celText8" />
+            android:id="@+id/celText8"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Uwagi:"
+            android:text="POWÓRZENIE"
             android:layout_gravity="center_horizontal" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editTextUwagi"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:inputType="number" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="START"
             android:id="@+id/startbutton"

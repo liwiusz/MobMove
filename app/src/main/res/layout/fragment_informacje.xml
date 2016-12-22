@@ -12,6 +12,14 @@
         android:layout_height="match_parent"
         android:weightSum="1">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="CZAS"
+            android:id="@+id/textView13"
+            android:layout_gravity="left|top" />
+
         <Chronometer
             android:layout_width="132dp"
             android:layout_height="wrap_content"
@@ -27,34 +35,29 @@
             android:layout_gravity="center_horizontal" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="CZAS"
-            android:id="@+id/textView13"
-            android:layout_gravity="left|top" />
-
-        <TextView
             android:layout_width="106dp"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="00:00:00"
             android:id="@+id/czasText"
             android:layout_gravity="right"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <ToggleButton
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="New ToggleButton"
-            android:id="@+id/toggleButton" />
+            android:id="@+id/toggleButton"
+            android:layout_weight="0.13" />
 
         <ImageButton
             android:layout_width="73dp"
             android:layout_height="wrap_content"
             android:id="@+id/stopButton"
             android:layout_gravity="right"
-            android:layout_weight="0.10" />
+            android:layout_weight="0.10"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,7 +65,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="0.0 m/s"
             android:id="@+id/speedText"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,7 +74,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="0"
             android:id="@+id/xMap"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -78,7 +83,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="0"
             android:id="@+id/yMap"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,13 +92,15 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="0"
             android:id="@+id/dystansMap"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Zapisz"
-            android:id="@+id/saveTrening" />
+            android:id="@+id/saveTrening"
+            android:layout_weight="0.13" />
 
         <TextView
             android:layout_width="wrap_content"

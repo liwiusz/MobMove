@@ -40,7 +40,12 @@ public class Ruch extends AppCompatActivity {
         fragmentTransaction.replace(R.id.container, fragment);
         fragmentTransaction.commit();
 
-
+//        Sensory.gravityX=0;
+//        Sensory.gravityY=0;
+//        Sensory.gravityZ=0;
+//        Sensory.linearAccelometerX=0;
+//        Sensory.linearAccelometerY=0;
+//        Sensory.linearAccelometerZ=0;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

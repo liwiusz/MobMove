@@ -42,6 +42,16 @@ public class Dane {
 
     public String magneticX;
 
+    public String getMacierzObrotu() {
+        return macierzObrotu+";";
+    }
+
+    public void setMacierzObrotu(String macierzObrotu) {
+        this.macierzObrotu = macierzObrotu;
+    }
+
+    public String macierzObrotu;
+
     public String getMagneticY() {
         return magneticY+";";
     }
